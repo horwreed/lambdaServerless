@@ -117,8 +117,8 @@ app.get('/quote/:petId', function (req, res) {
   });
 })
 
-//Get Pet endpoing
-app.get('/pet/:petId', function(req, res)) {
+//Get Pet endpoint
+app.get('/pet/:petId', function(req, res) {
     const params = {
     TableName: PET_TABLE,
     Key: {
@@ -146,36 +146,11 @@ app.get('/pet/:petId', function(req, res)) {
   });
 })
 
-// 1) Validate age is a non negative integer
-// 2) Validate zipcode is a non negative integer
-// 3) Validate species is a dog or a cat, our api only suppports dogs and cats
-function validateInput(petId, age, breed, zipcode, name, gender, species) {
-    var age_n = Number(age);
-    if (Number.isInteger(age_n) == false || age_n < 0) {
-        throw "Age must be a non negative integer";
-    }
-
-    var zipcode_n = Number(zipcode);
-    if (Number.isInteger(zipcode_n) == false || zipcode_n < 0) {
-        throw "Zipcode must ba non negative integer";
-    }
-
-    if (species != "dog" && species != "cat") {
-        throw "The only supported species are dog and cat";
-    }
-}
-
 // Create Pet endpoint
 app.post('/pet', function (req, res) {
   const { petId, age, breed, zipcode, name, gender, species } = req.body;
 
-  //Validate input before putting it in the db
-  try {
-    validateInput(petId, age, breed, zipcode, name, gender, species);
-  }
-  catch(err) {
-    res.status(400).json({ error: 'Could not create pet: ' + err});
-  }
+  //Maybe worth validating input before putting it in the db
 
   const params = {
     TableName: PET_TABLE,
